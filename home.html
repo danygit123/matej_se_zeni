@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Domů</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <h1 class="sr-only">Domů</h1>
+  <nav>
+    <a href="home.html" aria-current="page">Domů</a>
+    <a href="index.html">Úkoly</a>
+    <a href="otazky.html">Otázky</a>
+    <a href="gallery.html">Galerie</a>
+    <a href="settings.html">Nastavení</a>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <h2 class="hero-title">Matěji, ahoj</h2>
+  </section>
+
+  <section class="banner-grid">
+    <a class="banner banner--primary" href="otazky.html" aria-label="Otevřít Otázky">
+      <div class="banner-inner">
+        <div class="banner-icon" aria-hidden="true">❓</div>
+        <div class="banner-title">Otázky</div>
+      </div>
+    </a>
+
+    <a class="banner banner--primary" href="index.html" aria-label="Otevřít Úkoly">
+      <div class="banner-inner">
+        <div class="banner-icon" aria-hidden="true">✅</div>
+        <div class="banner-title">Úkoly</div>
+      </div>
+    </a>
+
+    <a class="banner banner--wide" href="gallery.html" aria-label="Otevřít Galerii">
+      <div class="banner-inner">
+        <div class="banner-icon" aria-hidden="true">🖼️</div>
+        <div class="banner-title">Galerie</div>
+      </div>
+    </a>
+
+    <a class="banner banner--small" href="settings.html" aria-label="Otevřít Nastavení">
+      <div class="banner-inner">
+        <div class="banner-icon" aria-hidden="true">⚙️</div>
+        <div class="banner-title">Nastavení</div>
+      </div>
+    </a>
+  </section>
+
+  <section class="countdown-wrap" aria-live="polite" aria-atomic="true">
+    <h3 class="countdown-title">Do svatby zbývá:</h3>
+    <div id="countdown" class="countdown">—</div>
+    <div class="countdown-note muted">6. září 2025</div>
+  </section>
+</main>
+
+<script src="script_home.js" defer></script>
+</body>
+</html>
