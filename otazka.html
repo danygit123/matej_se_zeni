@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Otázka</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <nav class="topnav">
+    <a href="home.html">Domů</a>
+    <a href="otazky.html" aria-current="page">Otázky</a>
+  </nav>
+</header>
+
+<main class="container">
+  <article class="question" id="question-detail" style="font-size:1.15rem;">
+    <h2 id="q-title" style="font-size:1.6rem;">Otázka</h2>
+    <p id="q-text" class="q-text"></p>
+
+    <div style="margin-top:12px;">
+      <button id="toggle-answer" class="btn">Zobrazit odpověď</button>
+    </div>
+
+    <div id="answer-wrap" class="answer" style="display:none; margin-top:12px;">
+      <div class="answer-label muted" style="margin-bottom:4px;">Odpověď</div>
+      <div id="q-answer" class="answer-body" style="font-weight:700;"></div>
+    </div>
+
+    <div style="margin-top:16px;">
+      <a class="btn btn-secondary" href="otazky.html">← Zpět na seznam otázek</a>
+    </div>
+  </article>
+</main>
+
+<script src="script_questions_data.js"></script>
+<script src="script_otazka_detail.js" defer></script>
+</body>
+</html>
