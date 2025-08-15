@@ -83,13 +83,13 @@
       answerBody.style.fontWeight = '800';
       answerBody.textContent = item.a || '—';
 
-      const showAnswerBtn = document.createElement('button');
-      showAnswerBtn.className = 'btn secondary';
-      showAnswerBtn.textContent = 'Zobrazit odpověď';
+      const showAnswerBtn = document.createElement('div');
+      showAnswerBtn.className = 'click-banner';
+      showAnswerBtn.textContent = 'Ukázat odpověď';
       showAnswerBtn.addEventListener('click', () => {
         const visible = answerWrap.style.display !== 'none';
         answerWrap.style.display = visible ? 'none' : 'block';
-        showAnswerBtn.textContent = visible ? 'Zobrazit odpověď' : 'Skrýt odpověď';
+        showAnswerBtn.textContent = visible ? 'Ukázat odpověď' : 'Skrýt odpověď';
         if (!visible) { saveSeen(i); status.textContent = '✔️ Už jsi otevřel'; }
       });
 

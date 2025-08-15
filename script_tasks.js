@@ -1,4 +1,4 @@
-// Clean rebuilt tasks script (explicit UI with 'Vybrat úkol' first)
+// Tasks UI with 'Vybrat úkol' first, then completion/skip controls unlocking gallery photos.
 
 const tasks = [
     "Coldplay camera s random lidma",
@@ -29,19 +29,17 @@ const tasks = [
     "Najdi tři různé ženy se jménem začínajícím na A, M, K – selfie s každou"
 ];
 
-function saveTaskSeen(idx){
-  try{
-    const key = 'tasksState';
-    const arr = JSON.parse(localStorage.getItem(key)||'[]');
-    arr[idx] = true;
-    localStorage.setItem(key, JSON.stringify(arr));
-  }catch(e){}
+function loadTasksState(){
+  try{ return JSON.parse(localStorage.getItem('tasksState')||'[]'); }catch(e){ return []; }
 }
-function isTaskSeen(idx){
-  try{
-    const arr = JSON.parse(localStorage.getItem('tasksState')||'[]');
-    return !!arr[idx];
-  }catch(e){ return false; }
+function saveTasksState(arr){
+  try{ localStorage.setItem('tasksState', JSON.stringify(arr)); }catch(e){}
+}
+function loadTasksMeta(){
+  try{ return JSON.parse(localStorage.getItem('tasksMeta')||'[]'); }catch(e){ return []; }
+}
+function saveTasksMeta(arr){
+  try{ localStorage.setItem('tasksMeta', JSON.stringify(arr)); }catch(e){}
 }
 
 function renderTasks(){
@@ -49,13 +47,16 @@ function renderTasks(){
   const progress = document.getElementById('progress');
   if (!container) return;
 
+  const state = loadTasksState();
+  const meta = loadTasksMeta();
+
   // Progress
   const total = tasks.length;
-  const done = (JSON.parse(localStorage.getItem('tasksState')||'[]')).filter(Boolean).length || 0;
+  const done = state.filter(s => s === 'done').length;
   if (progress){
     progress.innerHTML = `<div class="banner"><div class="banner-inner">
-      <div class="banner-title">Úkoly: ${done}/${total} otevřených</div>
-      <div class="muted">Nejdřív vyber úkol, pak se ukáže zadání.</div>
+      <div class="banner-title">Úkoly: ${done}/${total} odemčených fotek</div>
+      <div class="muted">Vyber úkol → zobraz zadání → označ jako splněný nebo přeskoč – fotka se v galerii odemkne.</div>
     </div></div>`;
   }
 
@@ -86,19 +87,50 @@ function renderTasks(){
     text.className = 'q-text';
     text.textContent = t;
 
+    const controls = document.createElement('div');
+    controls.className = 'actions';
+    const doneBtn = document.createElement('button');
+    doneBtn.className = 'btn success';
+    doneBtn.textContent = 'Úkol splněn';
+
+    const skipBtn = document.createElement('button');
+    skipBtn.className = 'btn secondary';
+    skipBtn.textContent = 'Přeskočit';
+
     const status = document.createElement('div');
     status.className = 'muted';
-    status.textContent = isTaskSeen(i) ? '✔️ Otevřený' : '—';
+    const current = meta[i];
+    if (state[i] === 'done'){
+      status.textContent = current === 'skipped' ? '✔️ Odemčeno (přeskočeno)' : '✔️ Odemčeno (splněno)';
+    } else {
+      status.textContent = '—';
+    }
+
+    function unlock(which){
+      // Mark gallery unlock by setting tasksState[i] = "done" (gallery listens for this value)
+      state[i] = 'done';
+      meta[i] = which; // "completed" | "skipped"
+      saveTasksState(state);
+      saveTasksMeta(meta);
+      status.textContent = which === 'skipped' ? '✔️ Odemčeno (přeskočeno)' : '✔️ Odemčeno (splněno)';
+      // let other tabs (gallery) react
+      try { window.dispatchEvent(new StorageEvent('storage', { key: 'tasksState' })); } catch(e){}
+    }
+
+    doneBtn.addEventListener('click', () => unlock('completed'));
+    skipBtn.addEventListener('click', () => unlock('skipped'));
 
     pickBtn.addEventListener('click', () => {
       const visible = body.style.display !== 'none';
       body.style.display = visible ? 'none' : 'block';
       pickBtn.textContent = visible ? 'Vybrat úkol' : 'Skrýt úkol';
-      if (!visible){ saveTaskSeen(i); status.textContent = '✔️ Otevřený'; }
     });
 
     actions.appendChild(pickBtn);
+    controls.appendChild(doneBtn);
+    controls.appendChild(skipBtn);
     body.appendChild(text);
+    body.appendChild(controls);
 
     card.appendChild(title);
     card.appendChild(actions);

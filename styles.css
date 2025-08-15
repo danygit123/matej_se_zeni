@@ -142,3 +142,13 @@ button:hover { background: #218838; }
 .card h2{ margin-top:0; margin-bottom:6px; font-size:1.1rem; }
 .btn{ padding:8px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.1); background:#333; cursor:pointer; }
 .btn.secondary{ background:transparent; }
+
+/* Clickable banner for revealing answers */
+.click-banner{
+  display:block; border-radius:16px; padding:16px; text-align:center; 
+  background:#fff; color:inherit; border:1px solid rgba(0,0,0,.12); 
+  cursor:pointer; user-select:none; margin:10px 0;
+  box-shadow:var(--shadow);
+}
+@media (prefers-color-scheme: dark){ .click-banner{ background:#111; border-color: rgba(255,255,255,.12);} }
+.btn.success{ background:#1f7a1f; }
