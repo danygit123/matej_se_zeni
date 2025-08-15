@@ -1,33 +1,6 @@
 // Tasks UI with 'Vybrat úkol' first, then completion/skip controls unlocking gallery photos.
 
-const tasks = [
-    "Coldplay camera s random lidma",
-    "Vyfoť selfie s 5 různými cizími ženami",
-    "Vyfoť se během víkendu se třemi různými lidmi jménem Matěj",
-    "Získej 5 podpisů od cizích žen na svoje tričko",
-    "Podepiš někomu tričko fixem. Tvý kamarádi se nepočítají",
-    "Přesvěč nějakou slečnu ať se podepíše na triko tvého kamaráda",
-    "Sežeň polaroid (libovolný), vyfoť se v triu s dvěma cizími ženami, a jedna z nich musí napsat na polaroid vzkaz",
-    "Požádej slečnu o kreslený portrét tebe (na libovolný papír)",
-    "Good morning zvoneček – ráno zazvonit třem cizím ženám a popřát hezký den",
-    "Udělej během víkendu radost 3 cizím ženám (zdokumentovat)",
-    "Přesvědč cizí ženu, aby tě učila říkat větu ve třech jazycích a natoč to",
-    "Získej kontakt na cizí ženu a pozvi ji na kafe (ne nutně přijmout)",
-    "Udělej pět přítahů na hrazdě u hřiště – ať to někdo zdokumentuje",
-    "Zahraj si s cizími lidmi petanque/šipky/kulečník – fotka důkaz",
-    "Vyjednej s barmanem slevu na drink pro vás dva (zdokumentovat)",
-    "Zatanči s cizí ženou krátkou choreografii (stačí 10–15 s) – video",
-    "Udělej 10 dřepů s cizí ženou na zádech – fotka",
-    "Nauč cizí ženu tleskací hru z dětství – video",
-    "Přines z baru ubrousek s vzkazem od cizí ženy (ne od kamarádky)",
-    "Zahraj si kámen-nůžky-papír s cizí ženou o drobný úkol – foto/video",
-    "Vyměň si na 5 minut nějaký kus oblečení s cizí ženou – foto",
-    "Napiš na ruku cizí ženě kompliment (její souhlas) – foto",
-    "Zazpívej refrén známé písně s cizí ženou – video",
-    "Nauč cizí ženu české/slovenské slangové slovo – video",
-    "Vytvořte spolu s cizí ženou srdíčko rukama – foto",
-    "Najdi tři různé ženy se jménem začínajícím na A, M, K – selfie s každou"
-];
+const tasks = ['Coldplay camera s random lidma', 'Vyfoť selfie s 5 různými cizími ženami', 'Předstírej, že jsi slavná osoba – přesvědč někoho, ať se s tebou vyfotí', 'Vyfoť se během víkendu se třemi různými lidmi jménem Matěj', 'Získej 5 podpisů od cizích žen na svoje tričko', 'Podepiš někomu tričko fixem. Tvý kamarádi se nepočítají', 'Presvěč nějakou slečnu ať se podepíše na triko tvého kamaráda', 'Objednej drink pro úplně cizího člověka', 'Natoč si v hospodě vlastní pivo', 'Objednej si pití falešným přízvukem (např. Ital, Rus, Francouz)', 'Dostaň číslo od cizí holky', 'Na chvíli si hraj na číšníka v baru a obsluž někoho cizího', 'Zazvoň na dveře a požádej o svatební požehnání', 'Zeptej se kolemjdoucí ženy, jestli se nechce nechat vyšetřit od pana doktora farmacie', 'Požádej o radu v lásce od staršího páru', 'Přesvěč někoho, ať tě adoptuje jako svého syna', 'Vyber si „družičku večera“ z cizích lidí a doprovoď ji 15 minut', 'Buď wingman a dohod jednu slecnu kamosovi (třeba na hlasku: krátké má jenom vlasy)', 'Najdi někoho bez vlasů a zeptej se, jestli by ti nedal tři vlasy děda vševěda. Případně mu je vytrhni bez ptaní', 'Otevři dveře na toalety, rozepni si kalhoty a zandej: "che tady někdo sex?"', '#Zazpívej část milostné písně někomu cizímu', 'Zahraj si pantomimu – ostatní vyberou téma', 'Předveď improvizovaný striptýz (ale s mírou)', 'Udělej 5 kliků uprostřed baru', 'Vyměň si jeden kus oblečení s úplně cizím člověkem'];
 
 function loadTasksState(){
   try{ return JSON.parse(localStorage.getItem('tasksState')||'[]'); }catch(e){ return []; }
@@ -50,7 +23,6 @@ function renderTasks(){
   const state = loadTasksState();
   const meta = loadTasksMeta();
 
-  // Progress
   const total = tasks.length;
   const done = state.filter(s => s === 'done').length;
   if (progress){
@@ -60,7 +32,6 @@ function renderTasks(){
     </div></div>`;
   }
 
-  // List
   container.innerHTML = '';
   const list = document.createElement('div');
   list.className = 'cards';
@@ -107,13 +78,11 @@ function renderTasks(){
     }
 
     function unlock(which){
-      // Mark gallery unlock by setting tasksState[i] = "done" (gallery listens for this value)
       state[i] = 'done';
-      meta[i] = which; // "completed" | "skipped"
+      meta[i] = which;
       saveTasksState(state);
       saveTasksMeta(meta);
       status.textContent = which === 'skipped' ? '✔️ Odemčeno (přeskočeno)' : '✔️ Odemčeno (splněno)';
-      // let other tabs (gallery) react
       try { window.dispatchEvent(new StorageEvent('storage', { key: 'tasksState' })); } catch(e){}
     }
 
