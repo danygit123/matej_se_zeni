@@ -97,3 +97,20 @@ button:hover { background: #218838; }
 /* Countdown only */
 .countdown-only{ margin:4px 0 24px; }
 .countdown.big{ font-size:2rem; font-weight:900; letter-spacing:.02em; }
+
+
+/* Center helpers */
+.center { display:flex; flex-direction:column; align-items:center; text-align:center; }
+
+/* Stronger lock visuals */
+.gallery-card .photo{ position:relative; aspect-ratio:1/1; }
+.gallery-card .photo img{ width:100%; height:100%; object-fit:cover; transition:filter .2s ease, opacity .2s ease, transform .2s ease; }
+.gallery-card.unlocked .photo img{ filter:none; opacity:1; transform:none; }
+.gallery-card.locked .photo img{ filter:blur(12px) grayscale(1); opacity:.18; transform:scale(1.06); }
+.gallery-card.locked .photo::after{
+  content:"\1F512"; /* 🔒 */
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:2rem; text-shadow:0 2px 8px rgba(0,0,0,.5);
+  background:rgba(0,0,0,.45);
+}
