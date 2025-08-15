@@ -2,27 +2,37 @@
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Nastavení</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <header>
-    <h1>Nastavení</h1>
+  <nav class="topnav">
+    <a href="home.html">Domů</a>
+    <a href="index.html">Úkoly</a>
+    <a href="otazky.html">Otázky</a>
+    <a href="gallery.html">Galerie</a>
+    <a href="settings.html" aria-current="page">Nastavení</a>
+  </nav>
 </header>
 
-<div id="password-container">
-    <p>Zadej heslo:</p>
-    <input type="password" id="password">
-    <button onclick="checkPassword()">Odemknout</button>
-</div>
+<main class="container">
+  <h1>Nastavení</h1>
 
-<div id="settings-container" style="display:none;">
-    <button onclick="resetTasks()">Resetovat úkoly</button>
-    <button onclick="resetQuestions()">Resetovat otázky</button>
-</div>
+  <div id="password-container">
+      <p>Zadej heslo:</p>
+      <input type="password" id="password">
+      <button onclick="checkPassword()">Odemknout</button>
+  </div>
 
-<a href="otazky.html" class="back-link">← Zpět na seznam otázek</a>
+  <div id="settings-container" style="display:none;">
+      <button onclick="resetTasks()">Resetovat úkoly</button>
+      <button onclick="resetQuestions()">Resetovat otázky</button>
+  </div>
+
+  <a href="otazky.html" class="back-link">← Zpět na seznam otázek</a>
+</main>
 
 <script src="script_settings.js"></script>
 </body>

@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Úkoly</title>
-    <link rel="stylesheet" href="styles.css">
+  <title>Úkoly</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <header>
-    <h1>Úkoly</h1>
-    <nav>
+  <nav class="topnav">
     <a href="home.html">Domů</a>
-        <a href="index.html">Úkoly</a>
-        <a href="otazky.html">Otázky</a>
-        <a href="settings.html">Nastavení</a>
-    </nav>
+    <a href="index.html" aria-current="page">Úkoly</a>
+    <a href="otazky.html">Otázky</a>
+    <a href="gallery.html">Galerie</a>
+    <a href="settings.html">Nastavení</a>
+  </nav>
 </header>
 
-<div id="progress"></div>
-<div id="tasks-container"></div>
+<main class="container">
+  <h1>Úkoly</h1>
+  <div id="progress"></div>
+  <div id="tasks-container"></div>
+</main>
 
 <script src="script_tasks.js"></script>
 </body>

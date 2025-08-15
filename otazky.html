@@ -4,53 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Otázky</title>
-  <style>
-    :root{
-      --bg:#ffffff; --text:#0f172a; --muted:#6b7280; --primary:#2563eb; --card:#f9fafb;
-      --radius:16px; --shadow:0 6px 20px rgba(0,0,0,.08);
-    }
-    @media (prefers-color-scheme: dark){
-      :root{ --bg:#0b1020; --text:#e5e7eb; --muted:#9ca3af; --card:#111827; --primary:#3b82f6; }
-    }
-    *{ box-sizing:border-box; }
-    html{ font-size:18px; }
-    body{ margin:0; background:var(--bg); color:var(--text);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial; line-height:1.6; }
-    a{ color:inherit; text-decoration:none; } a:hover{ text-decoration:none; } a:visited{ color:inherit; }
-
-    header{ position:sticky; top:0; z-index:10; background:color-mix(in srgb, var(--bg) 92%, transparent);
-      border-bottom:1px solid rgba(0,0,0,.06); backdrop-filter:blur(6px); }
-    .topnav{ display:flex; gap:12px; padding:10px 16px; overflow:auto; }
-    .topnav a{ padding:8px 12px; border-radius:999px; white-space:nowrap; border:1px solid rgba(0,0,0,.06); background:var(--card); }
-
-    .container{ width:100%; max-width:960px; margin:0 auto; padding:12px 16px 32px; }
-    .muted{ color:var(--muted); }
-
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; min-height:52px; padding:12px 16px;
-      border-radius:12px; border:0; background:var(--primary); color:#fff; font-weight:800; cursor:pointer; box-shadow:var(--shadow);
-    }
-    .btn-secondary{ background:#6b7280; }
-    .btn:active{ transform:scale(.98); }
-
-    .question{ background:var(--card); border:1px solid rgba(0,0,0,.06); border-radius:16px; padding:18px; margin:10px 0; box-shadow:var(--shadow); }
-    .question h2{ margin:0 0 6px; font-size:1.35rem; }
-    .question .q-text{ font-size:1.1rem; }
-    .answer{ background:rgba(0,0,0,.03); padding:12px; border-radius:12px; }
-    @media (prefers-color-scheme: dark){ .answer{ background:rgba(255,255,255,.06); } }
-
-    .actions{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <header>
   <nav class="topnav">
     <a href="home.html">Domů</a>
+    <a href="index.html">Úkoly</a>
     <a href="otazky.html" aria-current="page">Otázky</a>
+    <a href="gallery.html">Galerie</a>
+    <a href="settings.html">Nastavení</a>
   </nav>
 </header>
 
 <main class="container">
+  <h1>Otázky</h1>
   <div id="questions-container"></div>
 </main>
 
