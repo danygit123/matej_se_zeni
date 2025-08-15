@@ -4,7 +4,43 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Otázky</title>
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    :root{
+      --bg:#ffffff; --text:#0f172a; --muted:#6b7280; --primary:#2563eb; --card:#f9fafb;
+      --radius:16px; --shadow:0 6px 20px rgba(0,0,0,.08);
+    }
+    @media (prefers-color-scheme: dark){
+      :root{ --bg:#0b1020; --text:#e5e7eb; --muted:#9ca3af; --card:#111827; --primary:#3b82f6; }
+    }
+    *{ box-sizing:border-box; }
+    html{ font-size:18px; }
+    body{ margin:0; background:var(--bg); color:var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial; line-height:1.6; }
+    a{ color:inherit; text-decoration:none; } a:hover{ text-decoration:none; } a:visited{ color:inherit; }
+
+    header{ position:sticky; top:0; z-index:10; background:color-mix(in srgb, var(--bg) 92%, transparent);
+      border-bottom:1px solid rgba(0,0,0,.06); backdrop-filter:blur(6px); }
+    .topnav{ display:flex; gap:12px; padding:10px 16px; overflow:auto; }
+    .topnav a{ padding:8px 12px; border-radius:999px; white-space:nowrap; border:1px solid rgba(0,0,0,.06); background:var(--card); }
+
+    .container{ width:100%; max-width:960px; margin:0 auto; padding:12px 16px 32px; }
+    .muted{ color:var(--muted); }
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; min-height:52px; padding:12px 16px;
+      border-radius:12px; border:0; background:var(--primary); color:#fff; font-weight:800; cursor:pointer; box-shadow:var(--shadow);
+    }
+    .btn-secondary{ background:#6b7280; }
+    .btn:active{ transform:scale(.98); }
+
+    .question{ background:var(--card); border:1px solid rgba(0,0,0,.06); border-radius:16px; padding:18px; margin:10px 0; box-shadow:var(--shadow); }
+    .question h2{ margin:0 0 6px; font-size:1.35rem; }
+    .question .q-text{ font-size:1.1rem; }
+    .answer{ background:rgba(0,0,0,.03); padding:12px; border-radius:12px; }
+    @media (prefers-color-scheme: dark){ .answer{ background:rgba(255,255,255,.06); } }
+
+    .actions{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  </style>
 </head>
 <body>
 <header>
@@ -18,7 +54,99 @@
   <div id="questions-container"></div>
 </main>
 
-<script src="script_questions_data.js"></script>
-<script src="script_otazky.js" defer></script>
+<script>
+  const DATA = [{"q": "Kdy a kde jsme se poprvé viděli osobně?", "a": "Bylo to 6. 9. v Lánech na našem prvním randíčku a byl tam i Arronek☺️"}, {"q": "Jak jsme se rozloučili na prvním rande?", "a": "Ehmm dala jsem mu pusu na tvář😅"}, {"q": "Co je můj největší zlozvyk?", "a": "Od ty doby co jsem poznala Mateje, tak to je mačkaní jeho zadku xD"}, {"q": "Jaká je moje nejoblíbenější přezdívka pro tebe?", "a": "čubík"}, {"q": "Jaké jídlo bych mohla jíst každý den?", "a": "Jaaj sushi určitě 🍣"}, {"q": "Co mě na tobě nejvíc rajcuje?", "a": "Nejvíc hot je když skřípe zubama, když mi mačká prdelku hihi"}, {"q": "Co mám na tobě nejradši?", "a": "Když na sobě nic nemáš xD (ale taky to ze umíš vymyslet alternativu řešení a tím jsi ma opora)"}, {"q": "Oblíbená písnička nebo interpret?", "a": "Hans Zimmer"}, {"q": "Jsem spíš tým hory nebo moře?", "a": "Nejlíp kombo. Ale když si mám vybrat, tak hory. 🏔️"}, {"q": "Kdybych byla zvíře, co bych byla?", "a": "Nejvíc cute mi přijdou vombati, ale chtěla bych být asi makak"}, {"q": "Jaký je můj tajný talent?", "a": "Umím odhadnout dost přesně čas na treku. A taky tancovat lap dance ale pssst😛🙂"}, {"q": "Jaká je moje nejoblíbenější příchuť zmrzliny?", "a": "Tak tohle je hard. Ale řeknu mango (ale i arašíd, pistácie, maracuja)"}, {"q": "Jaké je naše místo?", "a": "Vůznice! Akce - Signal festival"}, {"q": "Kdy jsem ti poprvé řekla „miluji tě“?", "a": "V obytňáku u tebe na zahradě."}, {"q": "Můj oblíbený kus oblečení?", "a": "Bílo-červené proužkaté šaty (roxy kalhoty, Vansky)"}, {"q": "Oblíbený champ v LoLku?", "a": "Líbí se mi Irelia ✨"}, {"q": "Oblíbená sexuální poloha?", "a": "uuuu tak tohle je jasny…zezadu když mi u toho držíš vlasy 😜"}];
+
+  function saveSeen(idx){
+    try{
+      const key = 'questionsState';
+      const arr = JSON.parse(localStorage.getItem(key)||'[]');
+      arr[idx] = true;
+      localStorage.setItem(key, JSON.stringify(arr));
+    }catch(e){}
+  }
+
+  function isSeen(idx){
+    try{
+      const arr = JSON.parse(localStorage.getItem('questionsState')||'[]');
+      return !!arr[idx];
+    }catch(e){ return false; }
+  }
+
+  function ensureTotal(){
+    try{ localStorage.setItem('questionsTotal', String(DATA.length)); }catch(e){}
+  }
+
+  function render(){
+    ensureTotal();
+    const root = document.getElementById('questions-container');
+    root.innerHTML = '';
+
+    DATA.forEach((item, i) => {
+      const idx = i + 1;
+      const card = document.createElement('article');
+      card.className = 'question';
+
+      const h2 = document.createElement('h2');
+      h2.textContent = 'Otázka ' + idx;
+
+      const p = document.createElement('p');
+      p.className = 'q-text';
+      p.textContent = item.q;
+
+      const actions = document.createElement('div');
+      actions.className = 'actions';
+
+      const btn = document.createElement('button');
+      btn.className = 'btn';
+      btn.textContent = 'Zobrazit odpověď';
+
+      const status = document.createElement('div');
+      status.className = 'muted';
+      status.textContent = isSeen(i) ? '✔️ Už jsi otevřel' : '—';
+
+      const answerWrap = document.createElement('div');
+      answerWrap.className = 'answer';
+      answerWrap.style.display = 'none';
+
+      const answerLabel = document.createElement('div');
+      answerLabel.className = 'muted';
+      answerLabel.textContent = 'Odpověď';
+
+      const answerBody = document.createElement('div');
+      answerBody.style.fontWeight = '800';
+      answerBody.textContent = item.a || '—';
+
+      answerWrap.appendChild(answerLabel);
+      answerWrap.appendChild(answerBody);
+
+      btn.addEventListener('click', () => {
+        const visible = answerWrap.style.display !== 'none';
+        answerWrap.style.display = visible ? 'none' : 'block';
+        btn.textContent = visible ? 'Zobrazit odpověď' : 'Skrýt odpověď';
+        if (!visible) { // právě se otevřelo
+          saveSeen(i);
+          status.textContent = '✔️ Už jsi otevřel';
+        }
+      });
+
+      actions.appendChild(btn);
+
+      card.appendChild(h2);
+      card.appendChild(p);
+      card.appendChild(actions);
+      card.appendChild(answerWrap);
+      card.appendChild(status);
+
+      root.appendChild(card);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', render);
+  } else {
+    render();
+  }
+</script>
 </body>
 </html>
