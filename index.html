@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Úkoly</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <h1>Úkoly</h1>
+  <nav>
+    <a href="index.html">Úkoly</a>
+    <a href="otazky.html">Otázky</a>
+    <a href="settings.html">Nastavení</a>
+    <a href="gallery.html">Galerie</a>
+  </nav>
+</header>
+
+<main class="container">
+  <div id="progress" aria-live="polite" aria-atomic="true"></div>
+<div class="task-controls">
+  <label for="task-number">Zadat číslo úkolu:</label>
+  <input type="number" id="task-number" inputmode="numeric" min="1" placeholder="např. 23">
+  <button id="btn-open-task" class="btn">Otevřít</button>
+  <button id="btn-random-task" class="btn btn-secondary">Náhodný</button>
+  <span id="task-open-feedback" class="muted"></span>
+</div>
+  <div class="progress-wrap" aria-hidden="true">
+    <div class="progress-track">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    <div class="progress-percent" id="progress-percent">0%</div>
+  </div>
+
+  <div id="tasks-container"></div>
+</main>
+
+<script src="script_tasks.js" defer></script>
+</body>
+</html>

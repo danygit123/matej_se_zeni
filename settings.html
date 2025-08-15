@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Nastavení</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+    <h1>Nastavení</h1>
+</header>
+
+<div id="password-container">
+    <p>Zadej heslo:</p>
+    <input type="password" id="password">
+    <button onclick="checkPassword()">Odemknout</button>
+</div>
+
+<div id="settings-container" style="display:none;">
+    <button onclick="resetTasks()">Resetovat úkoly</button>
+    <button onclick="resetQuestions()">Resetovat otázky</button>
+</div>
+
+<a href="otazky.html" class="back-link">← Zpět na seznam otázek</a>
+
+<script src="script_settings.js"></script>
+</body>
+</html>

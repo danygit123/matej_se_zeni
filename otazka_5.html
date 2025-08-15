@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Otázka 5</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+    <h1>Otázka 5</h1>
+</header>
+
+<div class="video-container">
+
+    <p>Jaké jídlo bych mohla jíst každý den?</p>
+    <button id="answer-btn">Ukázat odpověď</button>
+    <div id="answer-video" style="display:none;">
+    <p>Jaaj sushi určitě 🍣 </p>
+    </div>
+</div>
+
+<a href="otazky.html" class="back-link">← Zpět na seznam otázek</a>
+
+<script>
+    // získej číslo otázky z názvu souboru
+    const questionNumber = parseInt(location.pathname.match(/(\d+)\.html$/)[1]);
+
+    // načtení stavu a označení otázky jako zobrazené
+    let state = JSON.parse(localStorage.getItem("questionsState")) || Array(15).fill(false);
+    state[questionNumber - 1] = true;
+    localStorage.setItem("questionsState", JSON.stringify(state));
+
+    // zobrazení odpovědi po kliknutí
+    document.getElementById("answer-btn").onclick = function() {
+        document.getElementById("answer-video").style.display = "block";
+    };
+</script>
+</body>
+</html>
