@@ -1,220 +1,117 @@
-// Clean rebuilt tasks script (no <script> tags)
+// Clean rebuilt tasks script (explicit UI with 'Vybrat úkol' first)
 
 const tasks = [
-// 📸 Fotky & Selfie
     "Coldplay camera s random lidma",
     "Vyfoť selfie s 5 různými cizími ženami",
     "Vyfoť se během víkendu se třemi různými lidmi jménem Matěj",
-
-    // 🖊️ Podpisy & Zápisy
     "Získej 5 podpisů od cizích žen na svoje tričko",
     "Podepiš někomu tričko fixem. Tvý kamarádi se nepočítají",
     "Přesvěč nějakou slečnu ať se podepíše na triko tvého kamaráda",
-
-    // 🍹 Pivo, Drink & Bar
-    "Objednej drink pro úplně cizího člověka",
-    "Natoč si v hospodě vlastní pivo",
-    "Objednej si pití falešným přízvukem (např. Ital, Rus, Francouz)",
-
-    // 💬 Socializace
-    "Dostaň číslo od cizí holky",
-    "Na chvíli si hraj na číšníka v baru a obsluž někoho cizího",
-    "Zazvoň na dveře a požádej o svatební požehnání",
-    "Zeptej se kolemjdoucí ženy, jestli se nechce nechat vyšetřit od pana doktora farmacie",
-    "Požádej o radu v lásce od staršího páru",
-    "Přesvědč někoho, ať tě adoptuje jako svého syna",
-    "Buď wingman a dohod jednu slečnu kámošovi",
-    "Najdi někoho bez vlasů a zeptej se, jestli by ti nedal tři vlasy děda vševěda",
-    "Otevři dveře na toalety, rozepni kalhoty a řekni: 'Chce tady někdo sex?'",
-
-    // 🎭 Zábava
-    "Zahraj si pantomimu – ostatní vyberou téma",
-
-    // 🎯 Soutěže
-    "Udělej 5 kliků uprostřed baru",
-    "Vyměň si jeden kus oblečení s úplně cizím člověkem",
-
-    // 🔄 Výměny
-    "Sežeň kondom a vyměň ho s někým za jiný předmět",
-
-    // 🎤 Komunikace
-    "Zeptej se tří lidí, jestli se ženíš ze správných důvodů",
-
-    // 🎶 Karaoke
-    "Přihlas se do karaoke",
-
-    // 💸 Prodej
-    "Prodej fiktivní svatební lístky kolemjdoucím",
-
-    // 🕊️ Symbolické
-    "Založ v baru minichvíli ticha na počest tvé svobody"
+    "Sežeň polaroid (libovolný), vyfoť se v triu s dvěma cizími ženami, a jedna z nich musí napsat na polaroid vzkaz",
+    "Požádej slečnu o kreslený portrét tebe (na libovolný papír)",
+    "Good morning zvoneček – ráno zazvonit třem cizím ženám a popřát hezký den",
+    "Udělej během víkendu radost 3 cizím ženám (zdokumentovat)",
+    "Přesvědč cizí ženu, aby tě učila říkat větu ve třech jazycích a natoč to",
+    "Získej kontakt na cizí ženu a pozvi ji na kafe (ne nutně přijmout)",
+    "Udělej pět přítahů na hrazdě u hřiště – ať to někdo zdokumentuje",
+    "Zahraj si s cizími lidmi petanque/šipky/kulečník – fotka důkaz",
+    "Vyjednej s barmanem slevu na drink pro vás dva (zdokumentovat)",
+    "Zatanči s cizí ženou krátkou choreografii (stačí 10–15 s) – video",
+    "Udělej 10 dřepů s cizí ženou na zádech – fotka",
+    "Nauč cizí ženu tleskací hru z dětství – video",
+    "Přines z baru ubrousek s vzkazem od cizí ženy (ne od kamarádky)",
+    "Zahraj si kámen-nůžky-papír s cizí ženou o drobný úkol – foto/video",
+    "Vyměň si na 5 minut nějaký kus oblečení s cizí ženou – foto",
+    "Napiš na ruku cizí ženě kompliment (její souhlas) – foto",
+    "Zazpívej refrén známé písně s cizí ženou – video",
+    "Nauč cizí ženu české/slovenské slangové slovo – video",
+    "Vytvořte spolu s cizí ženou srdíčko rukama – foto",
+    "Najdi tři různé ženy se jménem začínajícím na A, M, K – selfie s každou"
 ];
 
-// --- Persistent random order ---
-function shuffleArray(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
+function saveTaskSeen(idx){
+  try{
+    const key = 'tasksState';
+    const arr = JSON.parse(localStorage.getItem(key)||'[]');
+    arr[idx] = true;
+    localStorage.setItem(key, JSON.stringify(arr));
+  }catch(e){}
 }
-let tasksOrder = JSON.parse(localStorage.getItem("tasksOrder"));
-if (!Array.isArray(tasksOrder) || tasksOrder.length !== tasks.length) {
-  tasksOrder = Array.from({length: tasks.length}, (_, i) => i);
-  shuffleArray(tasksOrder);
-  localStorage.setItem("tasksOrder", JSON.stringify(tasksOrder));
-}
-const tasksList = tasksOrder.map(i => tasks[i]);
-
-const totalTasks = tasksList.length;
-let tasksState = JSON.parse(localStorage.getItem("tasksState")) || Array(totalTasks).fill("locked");
-
-function saveState() {
-  localStorage.setItem("tasksState", JSON.stringify(tasksState));
+function isTaskSeen(idx){
+  try{
+    const arr = JSON.parse(localStorage.getItem('tasksState')||'[]');
+    return !!arr[idx];
+  }catch(e){ return false; }
 }
 
-function renderTasks() {
-  try {
-    const container = document.getElementById("tasks-container");
-    if (!container) return;
-    container.innerHTML = "";
+function renderTasks(){
+  const container = document.getElementById('tasks-container');
+  const progress = document.getElementById('progress');
+  if (!container) return;
 
-    const unlocked = tasksState.filter(t => t !== "locked").length;
-    const progressEl = document.getElementById("progress");
-    if (progressEl) progressEl.textContent = `Úkol ${unlocked} z ${totalTasks}`;
-
-    const bar = document.getElementById("progress-bar");
-    const percentEl = document.getElementById("progress-percent");
-    const percent = Math.round((unlocked / totalTasks) * 100);
-    if (bar) bar.style.width = percent + "%";
-    if (percentEl) percentEl.textContent = percent + "%";
-
-    for (let i = 0; i < totalTasks; i++) {
-      const state = tasksState[i];
-      const taskDiv = document.createElement("div");
-      taskDiv.className = `task ${state}`;
-      taskDiv.innerHTML = `
-        <h2>Úkol ${i + 1}</h2>
-        <p>${tasksList[i]}</p>
-        ${
-          state === "done" 
-            ? `<span class="done-label">Splněno ✅</span>` 
-            : state === "skipped" 
-              ? `<span class="skip-label">Přeskočeno ⏭️</span> <button onclick="markDone(${i})" class="btn btn-secondary">Dodatečně splněno</button>`
-              : `<button onclick="completeTask(${i})" class="btn">Splněno</button>
-                 <button onclick="skipTask(${i})" class="btn btn-secondary">Přeskočit</button>`
-        }`;
-      if (state === "locked") taskDiv.style.display = "none";
-      container.appendChild(taskDiv);
-    }
-  } catch (e) {
-    let err = document.getElementById("error-banner");
-    if (!err) {
-      err = document.createElement("div");
-      err.id = "error-banner";
-      err.style.cssText = "color:#b91c1c;background:#fee2e2;padding:12px;border-radius:8px;margin:8px 0;";
-      document.body.prepend(err);
-    }
-    err.textContent = "Chyba ve skriptu: " + e.message;
-    console.error(e);
+  // Progress
+  const total = tasks.length;
+  const done = (JSON.parse(localStorage.getItem('tasksState')||'[]')).filter(Boolean).length || 0;
+  if (progress){
+    progress.innerHTML = `<div class="banner"><div class="banner-inner">
+      <div class="banner-title">Úkoly: ${done}/${total} otevřených</div>
+      <div class="muted">Nejdřív vyber úkol, pak se ukáže zadání.</div>
+    </div></div>`;
   }
-}
 
-function completeTask(index) {
-  if (tasksState[index] !== "locked") {
-    tasksState[index] = "done";
-    if (index + 1 < totalTasks && tasksState[index + 1] === "locked") {
-      tasksState[index + 1] = "active";
-    }
-    saveState();
-    renderTasks();
-  }
-}
+  // List
+  container.innerHTML = '';
+  const list = document.createElement('div');
+  list.className = 'cards';
 
-function skipTask(index) {
-  if (tasksState[index] !== "locked") {
-    tasksState[index] = "skipped";
-    if (index + 1 < totalTasks && tasksState[index + 1] === "locked") {
-      tasksState[index + 1] = "active";
-    }
-    saveState();
-    renderTasks();
-  }
-}
+  tasks.forEach((t, i) => {
+    const idx = i + 1;
+    const card = document.createElement('article');
+    card.className = 'card';
 
-function markDone(index) {
-  if (tasksState[index] === "skipped" || tasksState[index] === "active") {
-    tasksState[index] = "done";
-    saveState();
-    renderTasks();
-  }
-}
+    const title = document.createElement('h2');
+    title.textContent = 'Úkol ' + idx;
 
-// Init: ensure state length matches, ensure first task active, render after DOM ready
-(function() {
-  if (!Array.isArray(tasksState) || tasksState.length !== totalTasks) {
-    tasksState = Array(totalTasks).fill("locked");
-  }
-  if (tasksState[0] === "locked") tasksState[0] = "active";
-  saveState();
+    const actions = document.createElement('div');
+    actions.className = 'actions';
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", renderTasks);
-  } else {
-    renderTasks();
-  }
-  wireTaskControls();
-})();
+    const pickBtn = document.createElement('button');
+    pickBtn.className = 'btn';
+    pickBtn.textContent = 'Vybrat úkol';
 
+    const body = document.createElement('div');
+    body.style.display = 'none';
 
-function openTaskByNumber(n) {
-  const idx = parseInt(n, 10) - 1;
-  const feedback = document.getElementById("task-open-feedback");
-  if (isNaN(idx) || idx < 0 || idx >= totalTasks) {
-    if (feedback) feedback.textContent = "Neplatné číslo úkolu.";
-    return;
-  }
-  if (tasksState[idx] === "locked") {
-    tasksState[idx] = "active";
-  }
-  saveState();
-  renderTasks();
-  const cards = document.querySelectorAll("#tasks-container .task");
-  if (cards[idx]) cards[idx].scrollIntoView({ behavior: "smooth", block: "start" });
-  if (feedback) feedback.textContent = `Otevřen úkol ${idx + 1}.`;
-}
+    const text = document.createElement('p');
+    text.className = 'q-text';
+    text.textContent = t;
 
-function wireTaskControls() {
-  const input = document.getElementById("task-number");
-  const openBtn = document.getElementById("btn-open-task");
-  const rndBtn = document.getElementById("btn-random-task");
-  if (openBtn && input) openBtn.addEventListener("click", () => openTaskByNumber(input.value));
-  if (rndBtn && input) rndBtn.addEventListener("click", () => {
-    const n = getRandomTaskFromPool();
-    input.value = n;
-    openTaskByNumber(n);
+    const status = document.createElement('div');
+    status.className = 'muted';
+    status.textContent = isTaskSeen(i) ? '✔️ Otevřený' : '—';
+
+    pickBtn.addEventListener('click', () => {
+      const visible = body.style.display !== 'none';
+      body.style.display = visible ? 'none' : 'block';
+      pickBtn.textContent = visible ? 'Vybrat úkol' : 'Skrýt úkol';
+      if (!visible){ saveTaskSeen(i); status.textContent = '✔️ Otevřený'; }
+    });
+
+    actions.appendChild(pickBtn);
+    body.appendChild(text);
+
+    card.appendChild(title);
+    card.appendChild(actions);
+    card.appendChild(body);
+    card.appendChild(status);
+    list.appendChild(card);
   });
+
+  container.appendChild(list);
 }
 
-
-function getRandomTaskFromPool() {
-  // Persistent pool of remaining task numbers (1..totalTasks), shuffled
-  let pool = JSON.parse(localStorage.getItem("tasksRandomPool"));
-  const valid = Array.isArray(pool) && pool.every(n => Number.isInteger(n) && n >= 1 && n <= totalTasks);
-  if (!valid) {
-    pool = Array.from({length: totalTasks}, (_, i) => i + 1);
-    for (let i = pool.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [pool[i], pool[j]] = [pool[j], pool[i]];
-    }
-  }
-  if (pool.length === 0) {
-    pool = Array.from({length: totalTasks}, (_, i) => i + 1);
-    for (let i = pool.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [pool[i], pool[j]] = [pool[j], pool[i]];
-    }
-  }
-  const n = pool.pop();
-  localStorage.setItem("tasksRandomPool", JSON.stringify(pool));
-  return n;
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderTasks);
+} else {
+  renderTasks();
 }

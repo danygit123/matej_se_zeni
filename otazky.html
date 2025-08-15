@@ -19,7 +19,8 @@
 
 <main class="container">
   <h1>Otázky</h1>
-  <div id="questions-container"></div>
+  <p class="muted">Otázky jsou nejdřív skryté. Klikni na <strong>„Vybrat otázku“</strong> a teprve potom uvidíš text otázky. Odpověď je pak samostatně na tlačítko.</p>
+  <div id="questions-container" class="cards"></div>
 </main>
 
 <script>
@@ -33,14 +34,12 @@
       localStorage.setItem(key, JSON.stringify(arr));
     }catch(e){}
   }
-
   function isSeen(idx){
     try{
       const arr = JSON.parse(localStorage.getItem('questionsState')||'[]');
       return !!arr[idx];
     }catch(e){ return false; }
   }
-
   function ensureTotal(){
     try{ localStorage.setItem('questionsTotal', String(DATA.length)); }catch(e){}
   }
@@ -53,25 +52,24 @@
     DATA.forEach((item, i) => {
       const idx = i + 1;
       const card = document.createElement('article');
-      card.className = 'question';
+      card.className = 'card';
 
-      const h2 = document.createElement('h2');
-      h2.textContent = 'Otázka ' + idx;
-
-      const p = document.createElement('p');
-      p.className = 'q-text';
-      p.textContent = item.q;
+      const title = document.createElement('h2');
+      title.textContent = 'Otázka ' + idx;
 
       const actions = document.createElement('div');
       actions.className = 'actions';
 
-      const btn = document.createElement('button');
-      btn.className = 'btn';
-      btn.textContent = 'Zobrazit odpověď';
+      const pickBtn = document.createElement('button');
+      pickBtn.className = 'btn';
+      pickBtn.textContent = 'Vybrat otázku';
 
-      const status = document.createElement('div');
-      status.className = 'muted';
-      status.textContent = isSeen(i) ? '✔️ Už jsi otevřel' : '—';
+      const qWrap = document.createElement('div');
+      qWrap.style.display = 'none';
+
+      const qText = document.createElement('p');
+      qText.className = 'q-text';
+      qText.textContent = item.q;
 
       const answerWrap = document.createElement('div');
       answerWrap.className = 'answer';
@@ -85,25 +83,38 @@
       answerBody.style.fontWeight = '800';
       answerBody.textContent = item.a || '—';
 
+      const showAnswerBtn = document.createElement('button');
+      showAnswerBtn.className = 'btn secondary';
+      showAnswerBtn.textContent = 'Zobrazit odpověď';
+      showAnswerBtn.addEventListener('click', () => {
+        const visible = answerWrap.style.display !== 'none';
+        answerWrap.style.display = visible ? 'none' : 'block';
+        showAnswerBtn.textContent = visible ? 'Zobrazit odpověď' : 'Skrýt odpověď';
+        if (!visible) { saveSeen(i); status.textContent = '✔️ Už jsi otevřel'; }
+      });
+
+      const status = document.createElement('div');
+      status.className = 'muted';
+      status.textContent = isSeen(i) ? '✔️ Už jsi otevřel' : '—';
+
+      pickBtn.addEventListener('click', () => {
+        const visible = qWrap.style.display !== 'none';
+        qWrap.style.display = visible ? 'none' : 'block';
+        pickBtn.textContent = visible ? 'Vybrat otázku' : 'Skrýt otázku';
+      });
+
       answerWrap.appendChild(answerLabel);
       answerWrap.appendChild(answerBody);
 
-      btn.addEventListener('click', () => {
-        const visible = answerWrap.style.display !== 'none';
-        answerWrap.style.display = visible ? 'none' : 'block';
-        btn.textContent = visible ? 'Zobrazit odpověď' : 'Skrýt odpověď';
-        if (!visible) { // právě se otevřelo
-          saveSeen(i);
-          status.textContent = '✔️ Už jsi otevřel';
-        }
-      });
+      qWrap.appendChild(qText);
+      qWrap.appendChild(showAnswerBtn);
+      qWrap.appendChild(answerWrap);
 
-      actions.appendChild(btn);
+      actions.appendChild(pickBtn);
 
-      card.appendChild(h2);
-      card.appendChild(p);
+      card.appendChild(title);
       card.appendChild(actions);
-      card.appendChild(answerWrap);
+      card.appendChild(qWrap);
       card.appendChild(status);
 
       root.appendChild(card);

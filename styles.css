@@ -134,3 +134,11 @@ button:hover { background: #218838; }
 /* Gallery grid */
 .gallery-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); gap:12px; }
 .gallery-layout section{ margin-bottom:24px; }
+
+/* Cards layout for questions & tasks */
+.cards{ display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:16px; }
+.card{ border:1px solid rgba(0,0,0,.08); border-radius:16px; padding:14px; background:rgba(0,0,0,.02); box-shadow:var(--shadow); }
+@media (prefers-color-scheme: dark){ .card{ background:rgba(255,255,255,.04); } }
+.card h2{ margin-top:0; margin-bottom:6px; font-size:1.1rem; }
+.btn{ padding:8px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.1); background:#333; cursor:pointer; }
+.btn.secondary{ background:transparent; }
