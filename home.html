@@ -6,10 +6,9 @@
   <title>Domů</title>
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="home">
 <header>
-  <h1 class="sr-only">Domů</h1>
-  <nav>
+  <nav class="topnav">
     <a href="home.html" aria-current="page">Domů</a>
     <a href="index.html">Úkoly</a>
     <a href="otazky.html">Otázky</a>
@@ -18,45 +17,43 @@
   </nav>
 </header>
 
-<main class="container">
+<main class="container center">
   <section class="hero">
     <h2 class="hero-title">Matěji, ahoj</h2>
   </section>
 
-  <section class="banner-grid">
+  <section class="banner-grid center">
     <a class="banner banner--primary" href="otazky.html" aria-label="Otevřít Otázky">
-      <div class="banner-inner">
+      <div class="banner-inner center">
         <div class="banner-icon" aria-hidden="true">❓</div>
         <div class="banner-title">Otázky</div>
       </div>
     </a>
 
     <a class="banner banner--primary" href="index.html" aria-label="Otevřít Úkoly">
-      <div class="banner-inner">
+      <div class="banner-inner center">
         <div class="banner-icon" aria-hidden="true">✅</div>
         <div class="banner-title">Úkoly</div>
       </div>
     </a>
 
     <a class="banner banner--wide" href="gallery.html" aria-label="Otevřít Galerii">
-      <div class="banner-inner">
+      <div class="banner-inner center">
         <div class="banner-icon" aria-hidden="true">🖼️</div>
         <div class="banner-title">Galerie</div>
       </div>
     </a>
 
     <a class="banner banner--small" href="settings.html" aria-label="Otevřít Nastavení">
-      <div class="banner-inner">
+      <div class="banner-inner center">
         <div class="banner-icon" aria-hidden="true">⚙️</div>
         <div class="banner-title">Nastavení</div>
       </div>
     </a>
   </section>
 
-  <section class="countdown-wrap" aria-live="polite" aria-atomic="true">
-    <h3 class="countdown-title">Do svatby zbývá:</h3>
-    <div id="countdown" class="countdown">—</div>
-    <div class="countdown-note muted">6. září 2025</div>
+  <section class="countdown-only" aria-live="polite" aria-atomic="true">
+    <div id="countdown" class="countdown big">—</div>
   </section>
 </main>
 
